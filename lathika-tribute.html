@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lathika</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@300;400;500&family=Space+Mono&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0A1930;
+      --twilight: #142A4D;
+      --sky: #7FB2E5;
+      --mist: #B9CDE8;
+      --paper: #EAF1FB;
+      --gold: #E7C17E;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--ink);
+      color: var(--paper);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    a {
+      color: var(--sky);
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--sky);
+      outline-offset: 3px;
+    }
+
+    .display {
+      font-family: 'Fraunces', serif;
+    }
+
+    .mono {
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.04em;
+    }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem 1.5rem;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at 50% 30%, rgba(127, 178, 229, 0.16), transparent 60%),
+        var(--ink);
+    }
+
+    .eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--mist);
+      margin-bottom: 1.5rem;
+      opacity: 0.8;
+    }
+
+    .hero h1 {
+      font-size: clamp(3.2rem, 12vw, 7rem);
+      font-weight: 500;
+      margin: 0;
+      letter-spacing: 0.01em;
+      color: var(--paper);
+      text-shadow: 0 0 40px rgba(127, 178, 229, 0.25);
+    }
+
+    .hero p.sub {
+      max-width: 32rem;
+      margin: 1.75rem auto 0;
+      color: var(--mist);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* ---------- Section shell ---------- */
+    section {
+      position: relative;
+      padding: 7rem 1.5rem;
+    }
+
+    .section-inner {
+      max-width: 42rem;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sky);
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    h2.section-title {
+      font-family: 'Fraunces', serif;
+      font-weight: 500;
+      font-size: clamp(1.9rem, 4vw, 2.6rem);
+      margin: 0 0 2.5rem;
+      color: var(--paper);
+    }
+
+    /* ---------- Timeline ---------- */
+    .timeline {
+      position: relative;
+      padding-left: 2.2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 5px;
+      top: 6px;
+      bottom: 6px;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--sky), rgba(127, 178, 229, 0.05));
+    }
+
+    .entry {
+      position: relative;
+      padding-bottom: 3.2rem;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .entry.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .entry:last-child {
+      padding-bottom: 0;
+    }
+
+    .entry::before {
+      content: '';
+      position: absolute;
+      left: -2.2rem;
+      top: 0.35rem;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--ink);
+      border: 1.5px solid var(--gold);
+      box-shadow: 0 0 10px rgba(231, 193, 126, 0.5);
+    }
+
+    .entry .date {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .entry h3 {
+      font-family: 'Fraunces', serif;
+      font-weight: 500;
+      font-size: 1.35rem;
+      margin: 0 0 0.6rem;
+      color: var(--paper);
+    }
+
+    .entry p {
+      color: var(--mist);
+      line-height: 1.75;
+      margin: 0 0 1.1rem;
+      font-size: 0.98rem;
+    }
+
+    .photo-frame {
+      width: 100%;
+      max-width: 320px;
+      aspect-ratio: 4/3;
+      border: 1px dashed rgba(185, 205, 232, 0.35);
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+      background: rgba(234, 241, 251, 0.02);
+    }
+
+    .photo-frame img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 2;
+    }
+
+    .photo-frame .fallback-text {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(185, 205, 232, 0.5);
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    /* ---------- Fragments ---------- */
+    .fragments {
+      display: grid;
+      gap: 1.4rem;
+    }
+
+    .fragment {
+      background: var(--twilight);
+      border-left: 2px solid var(--gold);
+      padding: 1.3rem 1.5rem;
+      border-radius: 2px;
+      color: var(--mist);
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .fragment.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ---------- Letter ---------- */
+    .letter-section {
+      background: linear-gradient(180deg, var(--ink), var(--twilight) 40%, var(--ink));
+    }
+
+    .flame {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      margin: 0 auto 2.5rem;
+      box-shadow: 0 0 20px 6px rgba(231, 193, 126, 0.5);
+      animation: flicker 2.6s ease-in-out infinite;
+    }
+
+    @keyframes flicker {
+
+      0%,
+      100% {
+        opacity: 0.8;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.3);
+      }
+    }
+
+    .letter {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+      line-height: 2;
+      color: var(--paper);
+      font-weight: 300;
+    }
+
+    .letter p {
+      margin: 0 0 1.6rem;
+    }
+
+    .signature {
+      margin-top: 2.5rem;
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    footer {
+      text-align: center;
+      padding: 3rem 1.5rem 4rem;
+      color: var(--mist);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      opacity: 0.5;
+    }
+
+    /* ---------- Password gate ---------- */
+    #gate {
+      position: fixed;
+      inset: 0;
+      background: var(--ink);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    #gate.hidden {
+      display: none;
+    }
+
+    .gate-box {
+      text-align: center;
+      max-width: 22rem;
+    }
+
+    .gate-box h2 {
+      font-family: 'Fraunces', serif;
+      font-weight: 500;
+      font-size: 1.6rem;
+      margin: 0 0 0.5rem;
+      color: var(--paper);
+    }
+
+    .gate-box p {
+      color: var(--mist);
+      font-size: 0.9rem;
+      margin: 0 0 1.5rem;
+    }
+
+    .gate-box input {
+      width: 100%;
+      background: var(--twilight);
+      border: 1px solid rgba(185, 205, 232, 0.3);
+      color: var(--paper);
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      font-family: 'Space Mono', monospace;
+      font-size: 1rem;
+      text-align: center;
+      letter-spacing: 0.2em;
+      margin-bottom: 1rem;
+    }
+
+    .gate-box input:focus {
+      outline: 2px solid var(--sky);
+    }
+
+    .gate-box button {
+      background: var(--gold);
+      color: var(--ink);
+      border: none;
+      padding: 0.7rem 1.8rem;
+      border-radius: 4px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .gate-box .error {
+      color: #E58080;
+      font-size: 0.8rem;
+      margin-top: 0.8rem;
+      min-height: 1em;
+    }
+
+    #site {
+      display: none;
+    }
+
+    #site.visible {
+      display: block;
+    }
+
+    #birthday {
+      text-align: center;
+    }
+
+    .flame-big {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--gold);
+      margin: 0 auto 1.75rem;
+      box-shadow: 0 0 26px 8px rgba(231, 193, 126, 0.55);
+      animation: flicker 2.6s ease-in-out infinite;
+      cursor: pointer;
+      transition: opacity 0.6s ease;
+    }
+
+    .bday-msg {
+      max-width: 34rem;
+      margin: 0 auto 2rem;
+      color: var(--mist);
+      line-height: 1.9;
+      font-size: 1.05rem;
+    }
+
+    .bday-hint {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--mist);
+      opacity: 0.6;
+    }
+
+    .bday-wish {
+      display: none;
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      color: var(--gold);
+      font-size: 1.2rem;
+      margin-top: 1.2rem;
+    }
+
+    @media (max-width: 480px) {
+      section {
+        padding: 5rem 1.2rem;
+      }
+
+      .timeline {
+        padding-left: 1.8rem;
+      }
+
+      .entry::before {
+        left: -1.8rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <audio id="bg-song" src="audio/The Rose (Instrumental).mp3" loop preload="auto"></audio>
+
+  <div id="gate">
+    <div class="gate-box">
+      <h2 class="display">This page is just for you</h2>
+      <p>Enter the password to continue.</p>
+      <input type="password" id="gate-input" inputmode="numeric" placeholder="••••••" autocomplete="off">
+      <br>
+      <button id="gate-submit">Enter</button>
+      <div class="error" id="gate-error"></div>
+    </div>
+  </div>
+
+  <div id="site">
+
+    <section class="hero" id="hero">
+      <div class="eyebrow">since 2019</div>
+      <h1 class="display">Lathika</h1>
+      <p class="sub">A little of our story, kept safe here — for the birthday I couldn't be standing beside you for.</p>
+    </section>
+
+    <section id="timeline">
+      <div class="section-inner">
+        <span class="section-label mono">the story</span>
+        <h2 class="section-title display">How we happened</h2>
+
+        <div class="timeline">
+
+          <div class="entry">
+            <h3>The backseat of a car</h3>
+            <p>You and two friends climbed into the back of my car — and somewhere in that ordinary moment, something in
+              me quietly decided. I told myself it was a challenge. Looking back, I think it was just fate finding a
+              very small door to walk through.</p>
+            <div class="photo-frame" style="aspect-ratio:690/1280;"><img src="images/01-backseat-of-the-car.jpeg"
+                alt="The backseat of the car, 2019" onerror="this.remove()"><span
+                class="fallback-text">images/01-backseat-of-the-car.jpeg</span></div>
+          </div>
+
+          <div class="entry">
+            <h3>A broken leg, and you showing up anyway</h3>
+            <p>I was laid up, useless, stuck at home — and you started talking to me every single day, just to check on
+              me. I don't think you knew it then, but that's exactly when "friends" stopped being the right word for us.
+            </p>
+            <div class="photo-frame" style="aspect-ratio:960/1280;"><img src="images/02-broken-leg.jpeg"
+                alt="During the time he broke his leg" onerror="this.remove()"><span
+                class="fallback-text">images/02-broken-leg.jpeg</span></div>
+          </div>
+
+          <div class="entry">
+            <h3>The day we became "us"</h3>
+            <p>Somewhere between the daily chats and the first ride, we stopped being two people who talked, and became
+              two people who chose each other.</p>
+            <div class="photo-frame" style="aspect-ratio:1065/1280;"><img src="images/03-became-us.jpeg"
+                alt="The day we became a couple" onerror="this.remove()"><span
+                class="fallback-text">images/03-became-us.jpeg</span></div>
+          </div>
+
+          <div class="entry">
+            <h3>A cake, and a perfume I still have</h3>
+            <p>You cut a cake for me and gifted me a Fastrack perfume — such a small thing to most people, and something
+              I still hold onto, all these years later.</p>
+            <div class="photo-frame" style="aspect-ratio:600/800;"><img src="images/04-cake-and-perfume.jpeg"
+                alt="Cake and perfume gift" onerror="this.remove()"><span
+                class="fallback-text">images/04-cake-and-perfume.jpeg</span></div>
+          </div>
+
+          <div class="entry">
+            <h3>You stayed through my hardest time</h3>
+            <p>When things fell apart for me, you were there in a way I didn't know I needed. You know exactly what that
+              time meant to me — and somehow, in the middle of it, you became something more than anything else in my
+              life.</p>
+            <div class="photo-frame" style="aspect-ratio:1065/1280;"><img src="images/05-hardest-time.jpeg"
+                alt="During his hardest time" onerror="this.remove()"><span
+                class="fallback-text">images/05-hardest-time.jpeg</span></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="fragments">
+      <div class="section-inner">
+        <span class="section-label mono">things I'll always remember</span>
+        <h2 class="section-title display">Small pieces, kept anyway</h2>
+        <div class="fragments">
+          <div class="fragment">The backseat of a car, three of you laughing, and something in me just… deciding.</div>
+          <div class="fragment">The days I couldn't walk, and you called anyway. Every single day.</div>
+          <div class="fragment">December 5th. The day two people who talked became two people who chose each other.
+          </div>
+          <div class="fragment">A small bottle of perfume, still catching me by surprise on quiet days.</div>
+          <div class="fragment">You stayed through the hardest time of my life, and somehow, you never left the room.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="last-photo">
+      <div class="section-inner">
+        <span class="section-label mono">the last one</span>
+        <h2 class="section-title display">The last photo we took</h2>
+        <p style="color:var(--mist); line-height:1.75; font-size:0.98rem; margin:0 0 1.5rem;">Andhra Pradesh, last month
+          — our last meetup.</p>
+        <div class="photo-frame" style="aspect-ratio:960/1280;"><img src="images/06-last-meetup.jpeg"
+            alt="Our last meetup, Andhra Pradesh" onerror="this.remove()"><span
+            class="fallback-text">images/06-last-meetup.jpeg</span></div>
+      </div>
+    </section>
+
+    <section class="letter-section" id="letter">
+      <div class="section-inner">
+        <div class="flame"></div>
+        <div class="letter">
+          <p>Lathika,</p>
+          <p>Today is your birthday. For seven and a half years, I was the one standing beside you for this day — and
+            this year, for reasons neither of us chose, I'm not. I won't pretend I've made peace with that. I just
+            wanted you to have somewhere to see it, all of it, exactly as it happened.</p>
+          <p>Fate had its own plan for us, one I still don't fully understand. But nothing about what we had was a
+            mistake — not the backseat of that car, not the days you called just to check on me, not the year you stood
+            in a room I could barely breathe in. All of it was real. All of it mattered.</p>
+          <p>I can't be there today, and I can't be there for the years ahead the way I once thought I would. But I
+            hope, wherever you are, you know you were loved completely — for seven and a half years, by someone who
+            meant every bit of it.</p>
+          <p>Happy birthday, Lathika. Always.</p>
+          <div class="signature">— the one who couldn't be there, but never stopped being grateful he once was</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="birthday">
+      <div class="section-inner">
+        <div class="flame-big" id="bday-flame" role="button" tabindex="0"
+          aria-label="Blow out the candle and make a wish"></div>
+        <h2 class="section-title display">Happy Birthday, Lathika</h2>
+        <p class="bday-msg">Wherever this year takes you, I hope it's kind to you — soft where you need softness, and
+          brave where you need courage. I hope you laugh the way you used to, easily and often. I hope the people around
+          you know exactly how lucky they are. You deserve every good thing that comes your way, today and on every
+          birthday after this one — even the ones I won't be there to see.</p>
+        <p class="bday-hint mono" id="bday-hint">tap the flame and make a wish</p>
+        <p class="bday-wish" id="bday-wish">wish made — happy birthday, always ♡</p>
+      </div>
+    </section>
+
+    <footer class="mono">made with everything I had left to say</footer>
+
+  </div>
+
+  <script>
+    // password gate
+    const CORRECT = "170777";
+    const gate = document.getElementById('gate');
+    const site = document.getElementById('site');
+    const input = document.getElementById('gate-input');
+    const submit = document.getElementById('gate-submit');
+    const error = document.getElementById('gate-error');
+    const bgSong = document.getElementById('bg-song');
+
+    function tryUnlock() {
+      if (input.value === CORRECT) {
+        gate.classList.add('hidden');
+        site.classList.add('visible');
+
+        if (bgSong) {
+          bgSong.currentTime = 0;
+          bgSong.play().catch(() => {
+            // Browsers may block autoplay until the user interacts; this click/Enter already qualifies.
+          });
+        }
+      } else {
+        error.textContent = "That's not it — try again.";
+        input.value = '';
+        input.focus();
+      }
+    }
+
+    submit.addEventListener('click', tryUnlock);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') tryUnlock();
+    });
+
+    // scroll reveal
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('in'); }
+      });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll('.entry, .fragment').forEach(el => io.observe(el));
+  </script>
+
+</body>
+
+</html>
